@@ -1,25 +1,33 @@
-Background
-According to the Six Degrees of Kevin Bacon game, anyone in the Hollywood film industry can be connected to Kevin Bacon within six steps, where each step consists of finding a film that two actors both starred in.
+Six Degrees of Separation: Kevin Bacon
 
-In this problem, we’re interested in finding the shortest path between any two actors by choosing a sequence of movies that connects them. For example, the shortest path between Jennifer Lawrence and Tom Hanks is 2: Jennifer Lawrence is connected to Kevin Bacon by both starring in “X-Men: First Class,” and Kevin Bacon is connected to Tom Hanks by both starring in “Apollo 13.”
+This project explores the "Six Degrees of Kevin Bacon" concept, which suggests that any actor in Hollywood can be connected to Kevin Bacon within six steps. Each step consists of finding a movie that two actors both starred in.
 
-We can frame this as a search problem: our states are people. Our actions are movies, which take us from one actor to another (it’s true that a movie could take us to multiple different actors, but that’s okay for this problem). Our initial state and goal state are defined by the two people we’re trying to connect. By using breadth-first search, we can find the shortest path from one actor to another.
+The goal of this program is to find the shortest path between any two actors by identifying a sequence of movies that connects them. For example, the shortest path between Jennifer Lawrence and Tom Hanks is 2: Jennifer Lawrence is connected to Kevin Bacon through X-Men: First Class, and Kevin Bacon is connected to Tom Hanks through Apollo 13.
 
-Getting Started
-Download the distribution code from https://cdn.cs50.net/ai/2023/x/projects/0/degrees.zip and unzip it.
-Understanding
-The distribution code contains two sets of CSV data files: one set in the large directory and one set in the small directory. Each contains files with the same names, and the same structure, but small is a much smaller dataset for ease of testing and experimentation.
+The problem is framed as a search problem, where each actor is a state and the movies act as actions that move from one actor to another. Using breadth-first search, the program can compute the shortest path between two actors efficiently.
 
-Each dataset consists of three CSV files. A CSV file, if unfamiliar, is just a way of organizing data in a text-based format: each row corresponds to one data entry, with commas in the row separating the values for that entry.
+Dataset
 
-Open up small/people.csv. You’ll see that each person has a unique id, corresponding with their id in IMDb’s database. They also have a name, and a birth year.
+The project includes two datasets: small and large. Each dataset contains three CSV files:
 
-Next, open up small/movies.csv. You’ll see here that each movie also has a unique id, in addition to a title and the year in which the movie was released.
+people.csv: Lists each person with a unique ID, name, and birth year.
 
-Now, open up small/stars.csv. This file establishes a relationship between the people in people.csv and the movies in movies.csv. Each row is a pair of a person_id value and movie_id value. The first row (ignoring the header), for example, states that the person with id 102 starred in the movie with id 104257. Checking that against people.csv and movies.csv, you’ll find that this line is saying that Kevin Bacon starred in the movie “A Few Good Men.”
+movies.csv: Lists each movie with a unique ID, title, and release year.
 
-Next, take a look at degrees.py. At the top, several data structures are defined to store information from the CSV files. The names dictionary is a way to look up a person by their name: it maps names to a set of corresponding ids (because it’s possible that multiple actors have the same name). The people dictionary maps each person’s id to another dictionary with values for the person’s name, birth year, and the set of all the movies they have starred in. And the movies dictionary maps each movie’s id to another dictionary with values for that movie’s title, release year, and the set of all the movie’s stars. The load_data function loads data from the CSV files into these data structures.
+stars.csv: Establishes the relationship between people and movies. Each row contains a person_id and movie_id, indicating that the person starred in that movie.
 
-The main function in this program first loads data into memory (the directory from which the data is loaded can be specified by a command-line argument). Then, the function prompts the user to type in two names. The person_id_for_name function retrieves the id for any person (and handles prompting the user to clarify, in the event that multiple people have the same name). The function then calls the shortest_path function to compute the shortest path between the two people, and prints out the path.
+For example, in the small dataset, Kevin Bacon appears in stars.csv as starring in A Few Good Men.
 
-The shortest_path function, however, is left unimplemented. That’s where you come in!
+Program Structure
+
+The names dictionary maps actor names to their IDs, handling cases where multiple actors share the same name.
+
+The people dictionary maps each person’s ID to their name, birth year, and the set of movies they have starred in.
+
+The movies dictionary maps each movie’s ID to its title, year, and the set of actors who starred in it.
+
+The load_data function loads this information from the CSV files into memory.
+
+The program’s main function loads the data, prompts the user to enter two actor names, resolves their IDs using person_id_for_name, and then calls shortest_path to find the shortest connection between them. The resulting path is printed, showing which actors starred together in which movies.
+
+The shortest_path function implements the core search algorithm and is responsible for returning the shortest sequence of (movie, actor) pairs connecting the source actor to the target.
